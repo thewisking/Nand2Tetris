@@ -1,0 +1,3 @@
+push constant 42
+pop pointer 1
+

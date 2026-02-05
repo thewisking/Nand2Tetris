@@ -1,0 +1,8 @@
+goto MAIN
+function R.id 0
+push argument 0
+return
+label MAIN
+push constant 99
+call R.id 1
+pop temp 0

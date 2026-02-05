@@ -1,0 +1,7 @@
+label START
+push constant 2
+goto END
+label MID
+push constant 99
+label END
+pop temp 0

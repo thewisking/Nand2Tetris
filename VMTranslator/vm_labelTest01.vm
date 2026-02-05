@@ -1,0 +1,6 @@
+push constant 1
+goto END
+label SKIP
+push constant 99
+label END
+pop temp 0

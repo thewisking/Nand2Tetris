@@ -1,0 +1,8 @@
+push constant 0
+if-goto T
+push constant 0
+goto END
+label T
+push constant -1
+label END
+pop temp 0

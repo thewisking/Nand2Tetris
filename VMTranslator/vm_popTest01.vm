@@ -1,0 +1,2 @@
+push constant 123
+pop temp 0

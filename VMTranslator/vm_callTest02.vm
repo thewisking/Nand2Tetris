@@ -1,0 +1,14 @@
+goto MAIN
+function M.inc 0
+push argument 0
+push constant 1
+add
+return
+function O.forward 0
+push argument 0
+call M.inc 1
+return
+label MAIN
+push constant 5
+call O.forward 1
+pop temp 0

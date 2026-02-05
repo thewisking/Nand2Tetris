@@ -1,0 +1,11 @@
+goto MAIN
+function F.zero3 3
+push local 0
+push local 1
+push local 2
+add
+add
+return
+label MAIN
+call F.zero3 0
+pop temp 0

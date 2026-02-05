@@ -1,0 +1,5 @@
+goto L1
+push constant 99
+label L1
+push constant 42
+pop temp 0

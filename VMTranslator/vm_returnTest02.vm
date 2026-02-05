@@ -1,0 +1,11 @@
+goto MAIN
+function R.sum2 0
+push argument 0
+push argument 1
+add
+return
+label MAIN
+push constant 11
+push constant 31
+call R.sum2 2
+pop temp 0

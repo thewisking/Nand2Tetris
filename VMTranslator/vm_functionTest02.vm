@@ -1,0 +1,7 @@
+goto MAIN
+function F.zero5 5
+push local 4
+return
+label MAIN
+call F.zero5 0
+pop temp 0

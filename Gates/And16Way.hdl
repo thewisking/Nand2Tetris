@@ -1,0 +1,35 @@
+// File name: And16Way.hdl
+
+/**
+ * 16-way And: 
+ * out = (in[0] and in[1] and ... and in[15])
+ */
+
+CHIP And16Way {
+    IN in[16];
+    OUT out;
+
+    PARTS:
+    And(a = in[0], b = in[1], out = t0);
+    And(a = in[2], b = in[3], out = t1);
+    And(a = in[4], b = in[5], out = t2);
+    And(a = in[6], b = in[7], out = t3);
+    And(a = in[8], b = in[9], out = t4);
+    And(a = in[10], b = in[11], out = t5);
+    And(a = in[12], b = in[13], out = t6);
+    And(a = in[14], b = in[15], out = t7);
+
+
+    And(a = t0, b = t1, out = tt0);
+    And(a = t2, b = t3, out = tt1);
+    And(a = t4, b = t5, out = tt2);
+    And(a = t6, b = t7, out = tt3);
+
+
+    And(a = tt0, b = tt1, out = ttt0);
+    And(a = tt2, b = tt3, out = ttt1);
+
+    
+    And(a = ttt0, b = ttt1, out = out);
+
+}

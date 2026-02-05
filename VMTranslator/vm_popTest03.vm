@@ -1,0 +1,2 @@
+push constant 17
+pop static 2

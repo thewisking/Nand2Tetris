@@ -1,0 +1,72 @@
+// File name: Jump.hdl
+
+/**
+ * The jump unit determines whether the Program Counter should jump.
+ * A jump is performed if any of the j1 j2 j3 bits of the c-instruction 
+ * are true, AND the matching condition is met:
+ *   j1: jump if ALU output is < 0
+ *   j2: jump if ALU output   == 0
+ *   j3: jump if ALU output is > 0
+ * If multiple of these bits are set true, then jump if any of 
+ * those conditions are met,
+ * e.g. if j1 and j2 are both set true, jump if < 0 or == 0 
+ * The ALU output is determined through the zr and ng wires:
+ *   zr: is true when the ALU's output   == 0, false otherwise
+ *   ng: is true when the ALU's output is < 0, false otherwise
+ * If both zr and ng are false, then the ALU's output is > 0
+ */
+
+CHIP Jump {
+
+    IN  j1,             // c-instruction j1
+        j2,             // c-instruction j2
+        j3,             // c-instruction j3
+        zr,             // zr pin from ALU
+        ng;             // ng pin from ALU
+
+    OUT jump;           // true if a jump should be performed, false otherwise 
+
+PARTS:
+    Not(in = j1, out = Nj1);
+    Not(in = j2, out = Nj2);
+    Not(in = j3, out = Nj3);
+    Not(in = zr, out = Nzr);
+    Not(in = ng, out = Nng);
+
+
+    // 111 xx
+    And(a = j1, b = j2, out = j1j2);
+    And(a = j1j2, b = j3, out = JMP);
+
+    // 110 x1 + 110 1x
+    And(a = j1j2, b = Nj3, out = j1j2Nj3);
+    Or(a = zr, b = ng, out = zrOrng);
+    And(a = j1j2Nj3, b = zrOrng, out = JLE);
+
+    // 101 0x
+    And(a = j1, b = Nj2, out = j1Nj2);
+    And(a = j1Nj2, b = j3, out = j1Nj2j3);
+    And(a = j1Nj2j3, b = Nzr, out = JNE);
+
+    // 100 x1
+    And(a = j1Nj2, b = Nj3, out = j1Nj2Nj3);
+    And(a = j1Nj2Nj3, b = ng, out = JLT);
+
+    // 011 x0
+    And(a = Nj1, b = j2, out = Nj1j2);
+    And(a = Nj1j2, b = j3, out = Nj1j2j3);
+    And(a = Nj1j2j3, b = Nng, out = JGE);
+
+    // 010 1x
+    And(a = Nj1j2, b = Nj3, out = Nj1j2Nj3);
+    And(a = Nj1j2Nj3, b = zr, out = JEQ);
+
+    // 001 00
+    And( a = Nj1, b = Nj2, out = Nj1Nj2);
+    And( a = Nj1Nj2, b = j3, out = Nj1Nj2j3);
+    And(a = Nzr, b = Nng, out = NzrNng);
+    And(a = Nj1Nj2j3, b = NzrNng, out = JGT); 
+
+    Or8Way(in[0] = JGT, in[1] = JEQ, in[2] = JGE, in[3] = JLT, in[4] = JNE, in[5] = JLE, in[6] = JMP, out = jump);
+
+}
